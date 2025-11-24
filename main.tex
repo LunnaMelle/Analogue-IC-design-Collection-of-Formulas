@@ -1,0 +1,281 @@
+\documentclass[12pt, a4paper]{article}%
+\usepackage[top=4cm, bottom=4cm, left=3cm, right=3cm]{geometry}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{datetime2}
+\usepackage{amsmath}
+\allowdisplaybreaks
+\usepackage{circuitikz}
+\usepackage{import}
+\usepackage{hhline}
+\usepackage{amssymb}
+\usepackage{icomma}
+\usepackage{mathtools}
+\usepackage{siunitx}
+
+\usepackage{listings}
+\usepackage{xcolor} % För färger om du vill ha syntax highlighting
+
+\usepackage{caption}
+\captionsetup{labelfont=bf}
+
+
+
+\lstdefinestyle{matlabStyle}{
+    language=Matlab,
+    backgroundcolor=\color{gray!10},
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!50!black},
+    stringstyle=\color{red},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=5pt,
+    breaklines=true,
+    showstringspaces=false,
+    captionpos=b
+}
+\lstset{style=matlabStyle}
+
+
+
+\newcommand{\degree}{\ensuremath{^\circ}}
+
+
+% ieee referatsystem
+% \usepackage[backend=biber, style=ieee]{biblatex}
+% \addbibresource{referenser.bib}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.75em}
+
+% Hyperref should be loaded last
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    citecolor=blue
+}
+
+% Header setup
+\pagestyle{fancy}
+\fancyhead[R]{Analogue IC-design ETIN25 \hspace{1em} \thepage/\pageref{LastPage}}
+\fancyfoot{}
+
+\setlength{\headheight}{14.5pt} % Fix fancyhdr warning
+\setcounter{secnumdepth}{0} % Only number up to subsections
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    
+    \vspace{8cm}
+    
+    % Titel
+{\fontsize{100pt}{120pt}\selectfont\bfseries Collection of Formulas\par}
+
+    \vspace{1cm}
+
+    {\Large Analogue IC-design ETIN25}
+    
+    \vfill
+
+    \includegraphics[width=0.5\textwidth]{Sigill_Lunds_universitet_(vit).png}\par
+
+    {\textit{ \textbf{OBS!! Work in progress \\ Made by student Melker Rose E23}}}
+    
+    {\textit{Department of Electrical and Information Technology \\ Faculty of Engineering LTH \\ Lund University, Sweden \\ \DTMtoday}}
+
+    \vspace{1cm}
+
+    
+\end{titlepage}
+
+\thispagestyle{fancy}
+\setcounter{page}{2}
+
+\newpage
+
+\section{Preface}
+This collection of formulas is an unofficial formula sheet created by me, a student (Melker Rose E23), for the course Analogue IC-design (ETIN25) at LTH. 
+
+The primary purposes of creating this document were:
+\begin{itemize}
+    \item To gather all relevant formulas in one convenient location for study and reference
+    \item To enhance learning through the process of organizing and typesetting the material
+\end{itemize}
+
+\textbf{Important notes:}
+\begin{itemize}
+    \item This is \emph{not} an official document from the course administration, department, or faculty
+    \item Although care has been taken to ensure accuracy and formulas are primarily sourced from official materials, the coursebook (\textbf{Gray, Hurst, Lewis, Meyer:} \textit{Analysis and Design of Analog Integrated Circuits}, Fifth Edition. Wiley 2010.) and/or lecture slides, cross-referencing is recommended, as there may be errors or omissions
+    \item This document is a work in progress and may be updated
+\end{itemize}
+
+I hope this collection of formulas proves useful. \\ Best of luck, 
+
+\textbf{\textit{Melker Rose} \hfill \textit{\DTMtoday}}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section{Active-Device Parameters}
+
+\subsection{\textit{npn} Bipolar Transistor Parameters}
+
+\subsubsection{Large-Signal Forward-Active Operation}
+
+\begin{flalign}
+\parbox{4.5cm}{Collector current} 
+& \quad I_C = I_S \exp\left(\frac{V_{be}}{V_T}\right) &&
+\end{flalign}
+
+\subsubsection{Small-Signal Forward-Active Operation}
+
+\begin{flalign}
+\parbox{4.5cm}{Transconductance} 
+& \quad g_m = \frac{qI_C}{kT} = \frac{I_C}{V_T} &&\\[4pt]
+%
+\parbox{4.5cm}{Transconductance-to-current ratio} 
+& \quad \frac{g_m}{I_C} = \frac{1}{V_T} &&\\[4pt]
+%
+\parbox{4.5cm}{Input resistance} 
+& \quad r_\pi = \frac{\beta_0}{g_m} &&\\[4pt]
+%
+\parbox{4.5cm}{Output resistance} 
+& \quad r_o = \frac{V_A}{I_C} = \frac{1}{\eta g_m} &&\\[4pt]
+%
+\parbox{4.5cm}{Collector-base resistance} 
+& \quad r_\mu = \beta_0 r_o \text{ to } 5\beta_0 r_o &&\\[4pt]
+%
+\parbox{4.5cm}{Base-charging capacitance} 
+& \quad C_b = \tau_F g_m &&\\[4pt]
+%
+\parbox{4.5cm}{Base-emitter capacitance} 
+& \quad C_\pi = C_b + C_{je} &&\\[4pt]
+%
+\parbox{4.5cm}{Emitter-base junction depletion capacitance} 
+& \quad C_{je} \simeq 2C_{je0} &&\\[4pt]
+%
+\parbox{4.5cm}{Collector-base\\junction capacitance} 
+& \quad C_{\mu} = \frac{C_{\mu 0}}{\left(1 - \frac{V_{BC}}{\psi_{0c}}\right)^{n_c}} &&\\[4pt]
+%
+\parbox{4.5cm}{Collector-substrate\\junction capacitance} 
+& \quad C_{cs} = \frac{C_{cs 0}}{\left(1 - \frac{V_{SC}}{\psi_{0s}}\right)^{n_s}} &&\\[4pt]
+%
+\parbox{4.5cm}{Transition\\frequency} 
+& \quad f_T = \frac{1}{2\pi}\frac{g_m}{C_x + C_{\mu}} &&\\[4pt]
+%
+\parbox{4.5cm}{Effective\\transit time} 
+& \quad \tau_T = \frac{1}{2\pi f_T} = \tau_F + \frac{C_{je}}{g_m} + \frac{C_{\mu}}{g_m} &&\\[4pt]
+%
+\parbox{4.5cm}{Maximum\\gain} 
+& \quad g_m r_o = \frac{V_A}{V_T} = \frac{1}{\eta} &&
+\end{flalign}
+
+\subsection{NMOS Transistor Parameters}
+
+\subsubsection{Large-Signal Operation}
+
+\begin{flalign}
+\parbox{4.5cm}{Process transconductance parameter} 
+& \quad k' = \mu C_{ox} &&\\[4pt]
+%
+\parbox{4.5cm}{Drain current (active region)} 
+& \quad I_D = \frac{k'}{2}\frac{W}{L}(V_{GS} - V_t)^2 &&\\[4pt]
+%
+\parbox{4.5cm}{Early voltage} 
+& \quad V_A = \frac{I_D}{\delta I_D / \delta V_{DS}} = L_{eff} \left( \frac{\delta X_d}{\delta V_{DS}} \right)^{-1} &&\\[4pt]
+%
+\parbox{4.5cm}{Reciprocal of the Early voltage} 
+& \quad \lambda = \frac{1}{V_A} &&\\[4pt]
+%
+\parbox{4.5cm}{Drain current (active region) better} 
+& \quad I_D = \frac{k'}{2}\frac{W}{L}(V_{GS} - V_t)^2(1+\lambda V_{DS}) &&\\[4pt]
+%
+\parbox{4.5cm}{Drain current (triode region)} 
+& \quad I_D = \frac{k'}{2}\frac{W}{L}\left[2(V_{GS}-V_t)V_{DS} - V_{DS}^2\right] &&\\[4pt]
+%
+\parbox{4.5cm}{Characteristic current} 
+& \quad I_t = qXD_n n_{po} \exp\left(\frac{k_2}{V_T}\right) &&\\[4pt]
+%
+\parbox{4.5cm}{Drain current\\ (subthreshold region)} 
+& \quad I_D = \frac{W}{L} I_t \exp\left(\frac{V_{GS} - V_t}{nV_T}\right) \left[1 - \exp\left(-\frac{V_{DS}}{V_T}\right)\right] &&\\[4pt]
+%
+\parbox{4.5cm}{Threshold voltage}
+& \quad V_t = V_{t0} + \gamma\left[\sqrt{2\phi_f + V_{SB}} - \sqrt{2\phi_f}\right] &&\\[4pt]
+%
+\parbox{4.5cm}{Threshold voltage parameter}
+& \quad \gamma = \frac{1}{C_{ox}}\sqrt{2 q \varepsilon N_A} &&\\[4pt]
+%
+\parbox{4.5cm}{Oxide capacitance}
+& \quad C_{ox} = \frac{\varepsilon_{ox}}{t_{ox}} 
+= 3.45\,\text{fF}/\mu\text{m}^2 \quad \text{for } t_{ox}=100\,\text{\AA} &&
+\end{flalign}
+
+\subsubsection{Small-Signal Operation (Active Region)}
+
+\begin{flalign}
+\parbox{4.5cm}{Top-gate\\transconductance} 
+& \quad g_m = \frac{\delta I_D}{\delta V_{GS}} = k'\frac{W}{L}(V_{GS}-V_t) = \sqrt{2 I_D k'\frac{W}{L}} &&\\[4pt]
+%
+\parbox{4.5cm}{Transconductance-to-\\current ratio} 
+& \quad \frac{g_m}{I_D} = \frac{2}{V_{GS}-V_t} &&\\[4pt]
+%
+\parbox{4.5cm}{Body-effect\\transconductance} 
+& \quad g_{mb} = \frac{\gamma}{2\sqrt{2\phi_f + V_{SB}}}g_m = \chi g_m &&\\[4pt]
+%
+\parbox{4.5cm}{Channel-length\\modulation parameter} 
+& \quad \lambda = \frac{1}{V_A} = \frac{1}{L_\text{eff}}\,\frac{dX_d}{dV_{DS}} &&\\[4pt]
+%
+\parbox{4.5cm}{Output\\resistance} 
+& \quad r_o = \frac{1}{\lambda I_D} = \frac{L_{\text{eff}}}{I_D} \left( \frac{dX_d}{dV_{DS}} \right)^{-1} &&\\[4pt]
+%
+\parbox{4.5cm}{Effective channel\\length} 
+& \quad L_{\text{eff}} = L_{\text{down}} - 2L_d - X_d &&\\[4pt]
+%
+\parbox{4.5cm}{Maximum\\gain} 
+& \quad g_m r_o = \frac{1}{\lambda} \frac{2}{V_{GS} - V_i} = \frac{2V_A}{V_{GS} - V_i} &&\\[4pt]
+%
+\parbox{4.5cm}{Source-body\\depletion capacitance} 
+& \quad C_{sb} = \frac{C_{s0}}{\left( 1 + \frac{V_{SB}}{\psi_0} \right)^{0.5}} &&\\[4pt]
+%
+\parbox{4.5cm}{Drain-body\\depletion capacitance} 
+& \quad C_{db} = \frac{C_{db0}}{\left( 1 + \frac{V_{DB}}{\psi_0} \right)^{0.5}} &&\\[4pt]
+%
+\parbox{4.5cm}{Gate-source\\capacitance} 
+& \quad C_{gs} = \frac{2}{3} WL C_{ox} &&\\[4pt]
+%
+\parbox{4.5cm}{Transition\\frequency} 
+& \quad f_T = \frac{g_m}{2\pi (C_{gs} + C_{sd} + C_{gb})} &&
+%
+\end{flalign}
+
+\begin{flalign}
+\parbox{4.5cm}{Transconductance} 
+& \quad G_m = \frac{i_o}{v_i} \Bigg|_{v_o=0} &&\\[4pt]
+\parbox{4.5cm}{Input resistance\\(with test source)} 
+& \quad R_i = \frac{v_t}{i_t} \Bigg|_{v_o=0} &&\\[4pt]
+\parbox{4.5cm}{Output resistance\\(with test source)} 
+& \quad R_o = \frac{v_t}{i_t} \Bigg|_{v_i=0} &&\\[4pt]
+\parbox{4.5cm}{Maximum gain} 
+& \quad |A_v|_{max} = G_mR_o
+\end{flalign}
+
+\begin{flalign}
+\parbox{4.5cm}{Example\\example} 
+& \quad A = \frac{B}{C} &&\\[4pt]
+\end{flalign}
+
+\end{document}
