@@ -1,0 +1,8 @@
+\contentsline {section}{Preface}{2}{section*.1}%
+\contentsline {section}{Active-Device Parameters}{4}{section*.3}%
+\contentsline {subsection}{\textit {npn} Bipolar Transistor Parameters}{4}{section*.4}%
+\contentsline {subsubsection}{Large-Signal Forward-Active Operation}{4}{section*.5}%
+\contentsline {subsubsection}{Small-Signal Forward-Active Operation}{4}{section*.6}%
+\contentsline {subsection}{NMOS Transistor Parameters}{5}{section*.7}%
+\contentsline {subsubsection}{Large-Signal Operation}{5}{section*.8}%
+\contentsline {subsubsection}{Small-Signal Operation (Active Region)}{5}{section*.9}%
