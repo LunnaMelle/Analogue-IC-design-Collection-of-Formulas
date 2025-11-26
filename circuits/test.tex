@@ -1,0 +1,13 @@
+\begin{circuitikz}
+\tikzstyle{every node}=[font=\normalsize]
+
+\draw 
+         (0,2) to[short, o-, l=$v_i$] (1,2) to [R, l=$r_o$] (3,2) to [short] (4,2) to [R, l=$R_D$] (4,0)
+
+         (5,2) to [short, o-, l_=$v_o$, i=$i_o$] (4,2)
+
+        (1,2) to (1,1) to [american current source,l_={ \normalsize $(g_m + g_{mb})v_i$}] (3,1) to (3,2)
+        
+        
+        (4,0) node[ground]{};
+\end{circuitikz}

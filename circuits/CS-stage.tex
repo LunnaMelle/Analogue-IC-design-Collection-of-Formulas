@@ -1,0 +1,50 @@
+
+\begin{circuitikz}[american]
+    % Global styles for consistent sizing
+    \ctikzset{bipoles/length=1.2cm}
+
+    % Transistor (N-channel MOSFET)
+    % Placed at origin for relative positioning
+    \draw (0,0) node[nmos] (Q) {};
+
+    % Input Section (Gate)
+    % Wire goes left then down through voltage source to ground
+    \draw (Q.G) -- (-2.5, 0 |- Q.G) coordinate (in_top)
+          to[european voltage source, l_=$V_i$] (-2.5, -2.5) node[ground] {};
+    
+    % Input Current Arrow (Ii)
+    \draw[-Latex] (-2.0, 0.3) -- (-1.0, 0.3) node[midway, above] {$I_i$};
+    
+    % Input Polarity Signs (Manual placement to match image style)
+    \node[left] at (-2.7, -0.5) {$+$};
+    \node[left] at (-2.7, -2.0) {$-$};
+
+    % Drain Section
+    % Wire goes up through resistor to VDD
+    \draw (Q.D) node[circ] {} -- (0, 2.0) to[R, l_=$R_D$] (0, 4.5) coordinate (vdd);
+    % VDD Rail
+    \draw [thick] (-0.8, 4.5) -- (0.8, 4.5) node[midway, above] {$V_{DD}$};
+    
+    % Drain Current Arrow (Id)
+    \draw[-Latex] (0.6, 1.8) -- (0.6, 0.8) node[midway, right] {$I_d$};
+
+    % Source Section
+    % Wire goes down to ground
+    \draw (Q.S) -- (0, -2.5) coordinate (s_node);
+    \draw (s_node) node[circ] {} node[ground] {};
+
+    % Output Section
+    % Top Terminal connected to Drain
+    \draw (Q.D) -- (3.5, 0 |- Q.D) node[ocirc] (out_top) {};
+    % Bottom Terminal connected to Source/Ground
+    \draw (s_node) -- (3.5, -2.5) node[ocirc] (out_bot) {};
+
+    % Output Current Arrow (Io) - Pointing Left
+    \draw[-Latex] (3.0, 1) -- (2.0, 1) node[midway, above] {$I_o$};
+
+    % Output Voltage Label (Vo)
+    \node at (3.5, -1.0) {$V_o$};
+    \node[below] at (out_top) {$+$};
+    \node[above] at (out_bot) {$-$};
+
+\end{circuitikz}

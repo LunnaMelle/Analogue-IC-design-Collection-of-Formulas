@@ -22,6 +22,7 @@
 \usepackage{xcolor} % För färger om du vill ha syntax highlighting
 
 \usepackage{caption}
+\usepackage{subcaption}
 \captionsetup{labelfont=bf}
 
 
@@ -56,6 +57,8 @@
 \setlength{\parskip}{0.75em}
 
 % Hyperref should be loaded last
+\usepackage{bookmark}
+
 \usepackage{hyperref}
 \hypersetup{
     colorlinks=true,
@@ -80,7 +83,7 @@
     \vspace{8cm}
     
     % Titel
-{\fontsize{100pt}{120pt}\selectfont\bfseries Collection of Formulas\par}
+{\Huge \selectfont\bfseries Collection of Formulas \\ and compendium \par}
 
     \vspace{1cm}
 
@@ -88,7 +91,7 @@
     
     \vfill
 
-    \includegraphics[width=0.5\textwidth]{Sigill_Lunds_universitet_(vit).png}\par
+    \includegraphics[width=0.5\textwidth]{pictures/Sigill_Lunds_universitet_(vit).png}\par
 
     {\textit{ \textbf{OBS!! Work in progress \\ Made by student Melker Rose E23}}}
     
@@ -130,7 +133,25 @@ I hope this collection of formulas proves useful. \\ Best of luck,
 
 \newpage
 
-\section{Active-Device Parameters}
+\section{Formulas}
+
+\subsection{General formulas}
+\begin{flalign}
+\parbox{4.5cm}{Transconductance} 
+& \quad G_m = \frac{i_o}{v_i} \Bigg|_{v_o=0} &&\\[4pt]
+%
+\parbox{4.5cm}{Input resistance\\(with test source)} 
+& \quad R_i = \frac{v_t}{i_t} \Bigg|_{v_o=0} &&\\[4pt]
+%
+\parbox{4.5cm}{Output resistance\\(with test source)} 
+& \quad R_o = \frac{v_t}{i_t} \Bigg|_{v_i=0} &&\\[4pt]
+%
+\parbox{4.5cm}{Voltage gain} 
+& \quad A_v = G_mR_o &&\\[4pt]
+%
+\parbox{4.5cm}{Offset Voltage of the\\Source-Coupled Pair} 
+& \quad V_{OS} = \Delta V_t + \frac{(V_{GS} - V_t)}{2} \left( -\frac{\Delta R_L}{R_L} - \frac{\Delta (W/L)}{(W/L)} \right) &&
+\end{flalign}
 
 \subsection{\textit{npn} Bipolar Transistor Parameters}
 
@@ -195,6 +216,9 @@ I hope this collection of formulas proves useful. \\ Best of luck,
 \parbox{4.5cm}{Drain current (active region)} 
 & \quad I_D = \frac{k'}{2}\frac{W}{L}(V_{GS} - V_t)^2 &&\\[4pt]
 %
+\parbox{4.5cm}{Overdrive voltage (active region)} 
+& \quad V_{OV} = V_{GS} - V_t = \sqrt{\frac{I_D}{\frac{k'}{2}}\frac{W}{L}}  &&\\[4pt]
+%
 \parbox{4.5cm}{Early voltage} 
 & \quad V_A = \frac{I_D}{\delta I_D / \delta V_{DS}} = L_{eff} \left( \frac{\delta X_d}{\delta V_{DS}} \right)^{-1} &&\\[4pt]
 %
@@ -255,45 +279,302 @@ I hope this collection of formulas proves useful. \\ Best of luck,
 & \quad C_{db} = \frac{C_{db0}}{\left( 1 + \frac{V_{DB}}{\psi_0} \right)^{0.5}} &&\\[4pt]
 %
 \parbox{4.5cm}{Gate-source\\capacitance} 
-& \quad C_{gs} = \frac{2}{3} WL C_{ox} &&\\[4pt]
+& \quad C_{gs} = \frac{2}{3} WL C_{ox} + (C_{gd}) &&\\[4pt]
+%
+\parbox{4.5cm}{Gate-drain\\capacitance} 
+& \quad C_{gd} = W C_{ol} &&\\[4pt]
 %
 \parbox{4.5cm}{Transition\\frequency} 
-& \quad f_T = \frac{g_m}{2\pi (C_{gs} + C_{sd} + C_{gb})} &&
+& \quad f_T = \frac{g_m}{2\pi (C_{gs} + C_{sd} + C_{gb})} &&\\[4pt]
+%
+\parbox{4.5cm}{Miller\\capacitance} 
+& \quad C_M = (1-A_V)C_{gd} &&
 %
 \end{flalign}
 
+\subsection{Frequency}
 \begin{flalign}
-\parbox{4.5cm}{Transconductance} 
-& \quad G_m = \frac{i_o}{v_i} \Bigg|_{v_o=0} &&\\[4pt]
-\parbox{4.5cm}{Input resistance\\(with test source)} 
-& \quad R_i = \frac{v_t}{i_t} \Bigg|_{v_o=0} &&\\[4pt]
-\parbox{4.5cm}{Output resistance\\(with test source)} 
-& \quad R_o = \frac{v_t}{i_t} \Bigg|_{v_i=0} &&\\[4pt]
-\parbox{4.5cm}{Maximum gain} 
-& \quad |A_v|_{max} = G_mR_o
+\parbox{4.5cm}{-$3$dB frequency} 
+& \quad f_{-3\text{dB}} =  &&\\[4pt]
+%
+\parbox{4.5cm}{A\% to B\% rise time} 
+& \quad t_{r} = \frac{\ln \left( \frac{B\%}{A\%} \right)}{2\pi} \frac{1}{f_{-3\text{dB}}} &&\\[4pt]
 \end{flalign}
+
 
 \begin{flalign}
 \parbox{4.5cm}{Example\\example} 
 & \quad A = \frac{B}{C} &&\\[4pt]
 \end{flalign}
 
-\begin{flalign}
-\parbox{4.5cm}{Example\\example} 
-& \quad A = \frac{B}{C} &&\\[4pt]
-\end{flalign}
-\begin{flalign}
-\parbox{4.5cm}{Example\\example} 
-& \quad A = \frac{B}{C} &&\\[4pt]
-\end{flalign}
-\begin{flalign}
-\parbox{4.5cm}{Example\\example} 
-& \quad A = \frac{B}{C} &&\\[4pt]
-\end{flalign}
-\begin{flalign}
-\parbox{4.5cm}{Example\\example} 
-& \quad A = \frac{B}{C} &&\\[4pt]
-\end{flalign}
+\begin{figure}[H]
+    \centering
+    \input{circuits/CS-stage} % Inserts the LaTeX file
+    \caption{Common-source amplifier stage}
+    \label{fig:CS-stage}
+\end{figure}
+
+\section{Amplifying stages}
+
+\subsection{Single transistor amplifying stages}
+
+\subsubsection{Common source (MOSFET)}
+
+\begin{figure}[H]
+  \centering
+  % First Subfigure
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pictures/Resistively loaded common source.png}
+    \caption{Resistively loaded, common-source amplifier}
+    \label{fig:Resistively loaded, common-source amplifier}
+  \end{subfigure}
+  \hfill
+  % Second Subfigure
+  \begin{subfigure}{0.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pictures/small signal eq common source.png}
+    \caption{Low frequency small-signal equivalent circuit for the
+common-source amplifier}
+    \label{fig:small signal eq common source}
+  \end{subfigure}
+  \caption{Common-source amplifier}
+  \label{fig:Common-source stage (MOSFET)}
+\end{figure}
+
+The transconductance of the CS amplifier can be expressed as:
+\begin{equation}
+G_m = \frac{i_o}{v_i} \bigg|_{v_o = 0} = g_m
+\end{equation}
+The (small signal) input resistance \( R_i \) is
+\begin{equation}
+R_i = \frac{v_i}{i_i} \to \infty
+\end{equation}
+The output resistance is
+\begin{equation}
+R_o = \frac{v_o}{i_o} \bigg|_{v_i = 0} = R_D \parallel r_o
+\end{equation}
+The open-circuit, or unloaded, voltage gain is
+\begin{equation}
+a_v = \frac{v_o}{v_i} \bigg|_{i_o = 0} = -g_m(r_o \parallel R_D)
+\end{equation}
+
+If the drain load resistor \( R_D \) is replaced by a current source, \( R_D \to \infty \) and \( a_v \) becomes
+
+\begin{equation}
+\lim_{R_D \to \infty} a_v = -g_mr_o
+\end{equation}
+
+\subsubsection{Common gate (MOSFET)}
+\begin{figure}[H]
+  \centering
+  % First Subfigure
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pictures/Common gate.png}
+    \caption{Common-gate configuration}
+    \label{fig:Common gate}
+  \end{subfigure}
+  \hfill
+  % Second Subfigure
+  \begin{subfigure}{0.5\textwidth}
+    \centering
+    \input{circuits/test}
+    \caption{Low frequency small-signal equivalent circuit for the
+common-gate stage}
+    \label{fig:Small signal common gate}
+  \end{subfigure}
+  \caption{Common-gate stage}
+  \label{fig:Common-gate stage (MOSFET)}
+\end{figure}
+The transconductance of the CG-stage can be expressed as:
+\begin{equation}
+G_m = \frac{i_o}{v_i} = g_m + g_{mb} + \frac{1}{r_o} \approx g_m + g_{mb}
+\end{equation}
+The output resistance
+\begin{equation}
+R_o = \frac{v_o}{i_o} = r_o \parallel R_D
+\end{equation}
+The open-circuit voltage
+\begin{equation}
+A_v = \frac{v_o}{v_i} = +\left(g_m + g_{mb}\right)\left(r_o \parallel R_D\right) \xrightarrow[r_o \gg R_D]{} \left(g_m + g_{mb}\right)R_D
+\end{equation}
+The input resistance can be expressed as
+\begin{equation}
+R_i = \frac{v_i}{i_i} = \frac{R_D + r_o}{1 + \left( g_m + g_{mb} \right) r_o}
+\end{equation}
+which if \( r_o >> R_D\) and \(g_mr_o >> 1\) then becomes
+\begin{equation}
+R_i \approx \frac{1}{g_m + g_{mb}} \approx \frac{1}{g_m}
+\end{equation}
+
+\subsubsection{Common Drain (MOSFET)}
+\begin{figure}[H]
+  \centering
+  % First Subfigure
+  \begin{subfigure}{0.39\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pictures/Common-drain configuration.png}
+    \caption{Common-drain configuration}
+    \label{fig:Common drain}
+  \end{subfigure}
+  \hfill
+  % Second Subfigure
+  \begin{subfigure}{0.6\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pictures/Small signal common drain config.png}
+    \caption{Small-signal
+equivalent circuit of the common-drain configuration}
+    \label{fig:Small signal common drain config}
+  \end{subfigure}
+  \caption{Common-drain stage also called source follower}
+  \label{fig:Common-drain stage (MOSFET)}
+\end{figure}
+
+The transconductance of the CD-stage can be expressed as:
+\begin{equation}
+    G_m = g_m
+\end{equation}
+and the output resistance
+\begin{equation}
+R_o = \frac{v_o}{i_o} = \frac{1}{g_m + g_{mb} + \frac{1}{r_o} + \frac{1}{R_L}}
+\end{equation}
+Which then gives
+\begin{equation}
+A_v = \frac{g_m}{g_m + g_{mb} + \frac{1}{R_L} + \frac{1}{r_o}} = \frac{g_m R_L}{1 + \left( g_m + g_{mb} \right) R_L + \frac{R_L}{r_o}} < 1
+\end{equation}
+The input resistance (small-signal) is \(R_i = \infty\)
+
+\subsubsection{Common source with source degeneration (MOSFET)}
+\begin{figure}[H]
+  \centering
+  % First Subfigure
+  \begin{subfigure}{0.39\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pictures/Common-source amp with source degeneration.png}
+    \caption{Common-source amplifier with source degeneration}
+    \label{fig:Common-source amp with source degeneration}
+  \end{subfigure}
+  \hfill
+  % Second Subfigure
+  \begin{subfigure}{0.6\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pictures/Small signal common-source amp with source degeneration.png}
+    \caption{Small-signal equivalent of the source-degenerated, common-source amplifier}
+    \label{fig:Small signal common-source amp with source degeneration}
+  \end{subfigure}
+  \caption{Source-degenerated, common-source amplifier}
+  \label{fig:Common-source source degenerated (MOSFET)}
+\end{figure}
+
+The transconductance of the source-degenerated, common-source amplifier can be expressed as:
+\begin{equation}
+G_m = \frac{i_o}{v_i} = \frac{g_m}{1 + (g_m + g_{mb}) \, R_S + \frac{R_S}{r_o}}
+\end{equation}
+which if \( r_o \gg R_S \),
+\begin{equation}
+G_m \simeq \frac{g_m}{1 + (g_m + g_{mb}) \, R_S}
+\end{equation}
+The output resistance becomes
+\begin{equation}
+R_o = \frac{v_t}{i_t} = R_S + r_o \left[ 1 + (g_m + g_{mb}) R_S \right]
+\end{equation}
+
+\subsection{Multiple transistor amplifying stages}
+
+\subsubsection{Cascode amplifier (CS-CG)}
+\begin{figure}[H]
+  \centering
+  % First Subfigure
+  \begin{subfigure}{0.49\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pictures/cascode amplifier using mosfet.png}
+    \caption{Cascode amplifier using MOSFET (CS-CG)}
+    \label{fig:Common-source amp with source degeneration}
+  \end{subfigure}
+  \hfill
+  % Second Subfigure
+  \begin{subfigure}{0.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pictures/Small signal ew of cascode amp using mosfet.png}
+    \caption{Small-signal equivalent circuit for the MOS-transistor cascode connection}
+    \label{fig:Small signal common-source amp with source degeneration}
+  \end{subfigure}
+  \caption{CS-stage followed by CG-stage cascode amplifier}
+  \label{fig:Common-source source degenerated (MOSFET)}
+\end{figure}
+
+
+\section{Methods}
+
+\subsection{Dominant-Pole Approximation}
+
+For any electronic circuit, a transfer function can be derived
+\begin{equation}
+A(s) = \frac{a_0 + a_1 s + a_2 s^2 + \cdots + a_m s^m}{1 + b_1 s + b_2 s^2 + \cdots + b_n s^n}
+\end{equation}
+this can be factored into
+\begin{equation}
+    A(s) = K \frac{\left( 1 - \frac{s}{n_1} \right) \left( 1 - \frac{s}{n_2} \right) \cdots \left( 1 - \frac{s}{n_m} \right)}{\left( 1 - \frac{s}{p_1} \right) \left( 1 - \frac{s}{p_2} \right) \cdots \left( 1 - \frac{s}{p_n} \right)} 
+\end{equation}
+where \( K \) is a constant, \(n_i\) are the zeros, and \( p_i\) are the poles of the transfer function and
+\begin{equation}
+b_1 = \sum_{i=1}^n \left( -\frac{1}{p_i} \right)
+\end{equation}
+When one pole is dominant, i.e
+\begin{equation}
+|p_1| \ll |p_2|, |p_3|, \ldots \quad \text{so that} \quad \left| \frac{1}{p_1} \right| \gg \left| \sum_{i=2}^n \left( -\frac{1}{p_i} \right) \right|
+\end{equation}
+it can be shown that
+\begin{equation}
+b_1 \simeq \left| \frac{1}{p_1} \right|
+\end{equation}
+
+\subsubsection{Open-circuit (zero-value) time-constant}
+An approximation of \(b_1\) is 
+\begin{align}
+b_{1}=\sum_{i=1}^{n}\tau_{i}=\sum_{i=1}^{n}R_{i0}C_{i}
+\end{align}
+where $R_{i0}$ is the resistance seen by $C_i$ (i.e., with $C_i$ working as a voltage or current source) when all other capacitors are removed (open circuits, zeroed), and all independent voltage and current sources are zeroed as well; i.e., independent voltage sources become short circuits, and independent current sources become open circuits.
+
+For this the \(-3\text{dB}\) frequency can be estimated as
+\begin{equation}
+    f_{-3\text{dB}} = \frac{\omega_{-3\text{dB}}}{2\pi} \approx \frac{1}{2\pi b_1} = \frac{1}{2\pi \sum_{\forall i} \tau_i}
+\end{equation}
+
+\subsubsection{Open-circuit time-constant example}
+Calculate the \(-3\text{dB}\) angular frequency of the following circuit (ignore $C_{gb}$)
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{pictures/Two-stage common-source cascade amplifier.png}
+    \caption{Two-stage common-source cascade amplifier}
+    \label{fig:Two-stage common-source cascade amplifier}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{pictures/Small-signal equivalent circuit of two-stage common-source cascade amplifier.png}
+    \caption{Small-signal equivalent circuit of fig. \ref{fig:Two-stage common-source cascade amplifier}}
+    \label{fig:Small-signal equivalent circuit of two-stage common-source cascade amplifier}
+\end{figure}
+
+By using the open-circuit time-constant it can be found that
+\begin{align}
+    \tau_{gd1} &= C_{gd1} R_{gd01} = C_{gd1} (R_S + R_{L1} + g_{m1} R_{L1} R_S) \\
+    \tau_{gd2} &=C_{gd2} R_{gd02} = C_{gd2} (R_{L1} + R_{L2} + g_{m2} R_{L2} R_{L1}) \\
+    \tau_{gs1} &= C_{gs1} R_{gs01} = C_{gs1} R_S \\
+    \tau_{gs2} &= C_{gs2} R_{gs02} = C_{gs1} R_{L1} \\
+    \tau_{db1} &= C_{db1} R_{db01} = C_{db1} R_{L1} \\
+    \tau_{db2} &= C_{db2} R_{db02} = C_{db2} R_{L2}
+\end{align}
+for which
+\begin{equation}
+    b_1 = \sum_{\forall i} \tau_i = \sum_{i=1}^6 \tau_i
+\end{equation}
+and thus 
+\begin{equation}
+    \omega_{-3\text{dB}} \approx \frac{1}{b_1} = \frac{1}{\sum_{\forall i} \tau_i}
+\end{equation}
+
 
 
 \end{document}
