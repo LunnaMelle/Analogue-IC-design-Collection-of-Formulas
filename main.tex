@@ -83,7 +83,7 @@
     \vspace{8cm}
     
     % Titel
-{\Huge \selectfont\bfseries Collection of Formulas \\ and compendium \par}
+{\Huge \selectfont\bfseries Collection of Formulas \\ and Compendium \par}
 
     \vspace{1cm}
 
@@ -107,12 +107,12 @@
 
 \newpage
 
-\section{Preface}
-This collection of formulas is an unofficial formula sheet created by me, a student (Melker Rose E23), for the course Analogue IC-design (ETIN25) at LTH. 
+\section*{Preface}
+This collection of formulas and compendium is an unofficial document created by me, a student (Melker Rose E23), for the course Analogue IC-design (ETIN25) at LTH. 
 
 The primary purposes of creating this document were:
 \begin{itemize}
-    \item To gather all relevant formulas in one convenient location for study and reference
+    \item To gather all relevant formulas, method and more in one convenient location for study and reference
     \item To enhance learning through the process of organizing and typesetting the material
 \end{itemize}
 
@@ -123,7 +123,7 @@ The primary purposes of creating this document were:
     \item This document is a work in progress and may be updated
 \end{itemize}
 
-I hope this collection of formulas proves useful. \\ Best of luck, 
+I hope this document proves useful. \\ Best of luck, 
 
 \textbf{\textit{Melker Rose} \hfill \textit{\DTMtoday}}
 
@@ -295,7 +295,7 @@ I hope this collection of formulas proves useful. \\ Best of luck,
 \subsection{Frequency}
 \begin{flalign}
 \parbox{4.5cm}{-$3$dB frequency} 
-& \quad f_{-3\text{dB}} =  &&\\[4pt]
+& \quad f_{-3\text{dB}} = \frac{\omega_{-3\text{dB}}}{2\pi} = \frac{|p_1|}{2\pi} \approx  \frac{1}{2\pi \sum_{\forall i} \tau_i} = \frac{1}{2\pi \sum_{\forall i} R_{i0}C_i}  &&\\[4pt]
 %
 \parbox{4.5cm}{A\% to B\% rise time} 
 & \quad t_{r} = \frac{\ln \left( \frac{B\%}{A\%} \right)}{2\pi} \frac{1}{f_{-3\text{dB}}} &&\\[4pt]
@@ -503,7 +503,130 @@ R_o = \frac{v_t}{i_t} = R_S + r_o \left[ 1 + (g_m + g_{mb}) R_S \right]
   \caption{CS-stage followed by CG-stage cascode amplifier}
   \label{fig:Common-source source degenerated (MOSFET)}
 \end{figure}
+The output resistance of the CS-CG cascode amplifier can be written as
+\begin{equation}
+R_o = r_{o1} + r_{o2} + \left( g_{m2} + g_{mb2} \right) r_{o1} r_{o2}
+\label{ro cs cg}
+\end{equation}
+From the expression of the CG input impedance, we get:
+\begin{equation}
+R_{i2} = \frac{r_{o2} + R}{1 + (g_{m2} + g_{m2})r_{o2}} \approx \frac{1}{g_{m2} + g_{m2}} + \frac{R}{(g_{m2} + g_{m2})r_{o2}} \ll r_{o1}
+\end{equation}
+from which the transconductance can be calculated to
+\begin{align}
+G_m &= \frac{i}{v_i} \bigg|_{i=0} = g_{m1} \left. \frac{r_{o1}}{r_{o1} + R_{i2}} \right|_{R=0} = g_{m1} \left( 1 - \frac{\frac{r_{o2}}{1 + (g_{m2} + g_{m2})r_{o2}}}{r_{o1} +\frac{r_{o2}}{1 + (g_{m2} + g_{m2})r_{o2}}} \right) \\ 
+&\approx g_{m1} \left( 1 - \frac{r_{o2}}{r_{o1} + r_{o2} + (g_{m2} + g_{m2})r_{o1}r_{o2}} \right) \approx g_{m1}
+\label{gm cscg}
+\end{align}
+Using \eqref{ro cs cg} and \eqref{gm cscg} then the  gives
+\begin{align}
+    A_v &= -G_m (R_{o} \parallel R) \approx -g_{m1} \left[ \left( r_{o1} + r_{o2} + (g_{m2} + g_{mb2}) r_{o1} r_{o2} \right) \parallel R \right] \\ 
+    &\approx -g_{m1} R
+\end{align}
 
+\subsubsection{Source-coupled differential pair}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{pictures/n-channel MOSFET source-coupled pair.png}
+    \caption{n-channel MOSFET source-coupled pair}
+    \label{fig:n-channel MOSFET source-coupled pair}
+\end{figure}
+The two input signals to a differential amplifier are very often described in terms of differential signals and common-mode signals.
+
+Differential-mode gain:
+\begin{equation}
+A_{dm} = \frac{v_{od}}{v_{id}} \bigg|_{v_{ic}=0}
+\end{equation}
+Common-mode gain:
+\begin{equation}
+A_{cm} = \frac{v_{oc}}{v_{ic}} \bigg|_{v_{id}=0}
+\end{equation}
+Common-mode to differential-mode:
+\begin{equation}
+A_{cm-dm} = \frac{v_{od}}{v_{ic}} \bigg|_{v_{id}=0}
+\end{equation}
+Differential-mode to common-mode:
+\begin{equation}
+A_{dm-cm} = \frac{v_{oc}}{v_{id}} \bigg|_{v_{ic}=0}
+\end{equation}
+Ideally we want
+\begin{equation}
+A_{dm} = \infty \quad \text{and} \quad A_{cm} = A_{cm-dm} = A_{dm-cm} = 0
+\end{equation}
+The common-mode rejection ratio (CMRR):
+\begin{equation}
+CMRR = \frac{A_{dm}}{A_{cm}}
+\end{equation}
+
+\subsubsection{Pure differential mode differentiral pair}
+\begin{figure}[H]
+  \centering
+  % First Subfigure
+  \begin{subfigure}{0.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pictures/Small-signal equivalent circuit for differential pair with pure differential-mode input..png}
+    \caption{Very ideal small-signal equivalent circuit for differential pair with pure differential-mode input}
+    \label{fig:Small-signal equivalent circuit for differential pair with pure differential-mode input}
+  \end{subfigure}
+  \hfill
+  % Second Subfigure
+  \begin{subfigure}{0.49\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pictures/differential-mode half circuit.png}
+    \caption{Differential-mode half circuit}
+    \label{fig:differential-mode half circuit}
+  \end{subfigure}
+  \caption{Pure differential mode differentiral pair. Because of symmetry, no voltage across \(R_{TAIL}\) $\rightarrow$ the common source does not move $\rightarrow$ it is at “signal ground”. Again because of symmetry, it is enough to analyze only one half of the differential circuit}
+  \label{fig:Common-source source degenerated (MOSFET)}
+\end{figure}
+From Fig. \ref{fig:differential-mode half circuit} it can be seen
+\begin{equation}
+\frac{v_{od}}{2} = -g_m R \frac{v_{id}}{2}
+\end{equation}
+which then gives
+\begin{equation}
+A_{dm} = \left. \frac{v_{od}}{v_{id}} \right|_{v_{ic} = 0} = -g_m R
+\end{equation}
+
+To include the output resistance of the transistor in the above analysis, $R$ should be replaced by $R \parallel r_o$. Finally, note that neglecting $g_{mb}$ from this analysis for MOS source-coupled pairs has no effect on the result because the voltage from the source to the body of the input transistors is the same as the voltage across the tail current source, which is constant with a pure differential input.
+
+\subsubsection{Pure common mode differentiral pair}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\linewidth]{pictures/Source-coupled pair with pure common mode input.png}
+    \caption{Source-coupled pair with pure common mode input}
+    \label{fig:Source-coupled pair with pure common mode input}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  % First Subfigure
+  \begin{subfigure}{0.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pictures/Small-signal eq pure common mode input.png}
+    \caption{Small-signal equivalent pure common mode input}
+    \label{fig:Small-signal eq pure common mode input}
+  \end{subfigure}
+  \hfill
+  % Second Subfigure
+  \begin{subfigure}{0.49\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pictures/Common mode half circuit.png}
+    \caption{Common mode half circuit}
+    \label{fig:Common mode half circuit}
+  \end{subfigure}
+  \caption{Pure common mode differentiral pair. Because of symmetry, no current across \(i_x\) $\rightarrow$ enough to analyze only one half of the differential circuit}
+  \label{fig:Common-source source degenerated (MOSFET)}
+\end{figure}
+The gain of CS stage with source degeneration ($g_{mb}$ not included in circuit):  
+\begin{equation}
+A_{cm} \approx -\frac{g_m R}{1 + 2 \left( g_m + g_{mb} \right) R_{TAIL}}
+\end{equation}
+Again, to include the output resistance of the transistor $R$ should be replaced by $R \parallel r_o$. Thus the common-mode rejection ratio (CMRR) can be calculated to
+\begin{equation}
+CMRR = \left| \frac{A_{dm}}{A_{cm}} \right| = \frac{g_m R}{\dfrac{g_m R}{1 + 2 \left( g_m + g_{mb} \right) R_{TAIL}}} = 1 + 2 \left( g_m + g_{mb} \right) R_{TAIL}
+\end{equation}
+\textit{OBS!} CMRR may be quite high at low frequencies.
 
 \section{Methods}
 
@@ -539,7 +662,7 @@ where $R_{i0}$ is the resistance seen by $C_i$ (i.e., with $C_i$ working as a vo
 
 For this the \(-3\text{dB}\) frequency can be estimated as
 \begin{equation}
-    f_{-3\text{dB}} = \frac{\omega_{-3\text{dB}}}{2\pi} \approx \frac{1}{2\pi b_1} = \frac{1}{2\pi \sum_{\forall i} \tau_i}
+    f_{-3\text{dB}} = \frac{\omega_{-3\text{dB}}}{2\pi} = \frac{|p_1|}{2\pi} \approx \frac{1}{2\pi b_1} = \frac{1}{2\pi \sum_{\forall i} \tau_i}
 \end{equation}
 
 \subsubsection{Open-circuit time-constant example}
