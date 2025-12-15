@@ -69,11 +69,11 @@
 
 % Header setup
 \pagestyle{fancy}
-\fancyhead[R]{Analogue IC-design ETIN25 \hspace{1em} \thepage/\pageref{LastPage}}
-\fancyfoot{}
+\fancyhead[R]{Melker Rose E23 \\ Analogue IC-design ETIN25}
+\fancyfoot[C]{Page \thepage \vspace{1em} of \pageref{LastPage}}
 
 \setlength{\headheight}{14.5pt} % Fix fancyhdr warning
-\setcounter{secnumdepth}{0} % Only number up to subsections
+\setcounter{secnumdepth}{3}
 
 \begin{document}
 
@@ -93,9 +93,9 @@
 
     \includegraphics[width=0.5\textwidth]{pictures/Sigill_Lunds_universitet_(vit).png}\par
 
-    {\textit{ \textbf{OBS!! Work in progress \\ Made by student Melker Rose E23}}}
+    {\textit{ \textbf{OBS!! Work in progress \\ Made by student Melker Rose E23 \\ Lund, Sweden \\ \DTMtoday}}}
     
-    {\textit{Department of Electrical and Information Technology \\ Faculty of Engineering LTH \\ Lund University, Sweden \\ \DTMtoday}}
+    {\textit{}}
 
     \vspace{1cm}
 
@@ -119,7 +119,8 @@ The primary purposes of creating this document were:
 \textbf{Important notes:}
 \begin{itemize}
     \item This is \emph{not} an official document from the course administration, department, or faculty
-    \item Although care has been taken to ensure accuracy and formulas are primarily sourced from official materials, the coursebook (\textbf{Gray, Hurst, Lewis, Meyer:} \textit{Analysis and Design of Analog Integrated Circuits}, Fifth Edition. Wiley 2010.) and/or lecture slides, cross-referencing is recommended, as there may be errors or omissions
+    \item Derivations and proofs are often left out, for further reading see the coursebook (\textbf{Gray, Hurst, Lewis, Meyer:} \textit{Analysis and Design of Analog Integrated Circuits}, Fifth Edition. Wiley 2010).
+    \item Although care has been taken to ensure accuracy and formulas are primarily sourced from official materials, the coursebook and/or lecture slides, cross-referencing is recommended, as there may be errors or omissions
     \item This document is a work in progress and may be updated
 \end{itemize}
 
@@ -149,8 +150,18 @@ I hope this document proves useful. \\ Best of luck,
 \parbox{4.5cm}{Voltage gain} 
 & \quad A_v = G_mR_o &&\\[4pt]
 %
+\parbox{4.5cm}{Capcitance} 
+& \quad C = \frac{A \cdot t_{ox}}{\epsilon_{ox}} &&\\[4pt]
+%
+\parbox{4.5cm}{Resistance from sheet resistance} 
+& \quad R = R_s \frac{L}{W} &&\\[4pt]
+%
+\parbox{4.5cm}{Current from current density} 
+& \quad J = J_{\rho} W &&\\[4pt]
+%
 \parbox{4.5cm}{Offset Voltage of the\\Source-Coupled Pair} 
 & \quad V_{OS} = \Delta V_t + \frac{(V_{GS} - V_t)}{2} \left( -\frac{\Delta R_L}{R_L} - \frac{\Delta (W/L)}{(W/L)} \right) &&
+%
 \end{flalign}
 
 \subsection{\textit{npn} Bipolar Transistor Parameters}
@@ -217,7 +228,7 @@ I hope this document proves useful. \\ Best of luck,
 & \quad I_D = \frac{k'}{2}\frac{W}{L}(V_{GS} - V_t)^2 &&\\[4pt]
 %
 \parbox{4.5cm}{Overdrive voltage (active region)} 
-& \quad V_{OV} = V_{GS} - V_t = \sqrt{\frac{I_D}{\frac{k'}{2}}\frac{W}{L}}  &&\\[4pt]
+& \quad V_{OV} = V_{GS} - V_t = \sqrt{\frac{I_D}{\frac{k'}{2}\frac{W}{L}}}  &&\\[4pt]
 %
 \parbox{4.5cm}{Early voltage} 
 & \quad V_A = \frac{I_D}{\delta I_D / \delta V_{DS}} = L_{eff} \left( \frac{\delta X_d}{\delta V_{DS}} \right)^{-1} &&\\[4pt]
@@ -285,7 +296,7 @@ I hope this document proves useful. \\ Best of luck,
 & \quad C_{gd} = W C_{ol} &&\\[4pt]
 %
 \parbox{4.5cm}{Transition\\frequency} 
-& \quad f_T = \frac{g_m}{2\pi (C_{gs} + C_{sd} + C_{gb})} &&\\[4pt]
+& \quad f_T = \frac{g_m}{2\pi (C_{gs} + C_{gd} + C_{gb})} &&\\[4pt]
 %
 \parbox{4.5cm}{Miller\\capacitance} 
 & \quad C_M = (1-A_V)C_{gd} &&
@@ -295,7 +306,10 @@ I hope this document proves useful. \\ Best of luck,
 \subsection{Frequency}
 \begin{flalign}
 \parbox{4.5cm}{-$3$dB frequency} 
-& \quad f_{-3\text{dB}} = \frac{\omega_{-3\text{dB}}}{2\pi} = \frac{|p_1|}{2\pi} \approx  \frac{1}{2\pi \sum_{\forall i} \tau_i} = \frac{1}{2\pi \sum_{\forall i} R_{i0}C_i}  &&\\[4pt]
+& \quad f_{-3\text{dB}} = \frac{\omega_{-3\text{dB}}}{2\pi} = \frac{|p_1|}{2\pi} \approx  \frac{1}{2\pi \sum_{\forall i} \tau_i}  &&\\[4pt]
+%
+\parbox{4.5cm}{Time constant} 
+& \quad  \tau_i = R_{i0}C_i  &&\\[4pt]
 %
 \parbox{4.5cm}{A\% to B\% rise time} 
 & \quad t_{r} = \frac{\ln \left( \frac{B\%}{A\%} \right)}{2\pi} \frac{1}{f_{-3\text{dB}}} &&\\[4pt]
@@ -314,7 +328,7 @@ I hope this document proves useful. \\ Best of luck,
     \label{fig:CS-stage}
 \end{figure}
 
-\section{Amplifying stages}
+\section{Amplifying Stages}
 
 \subsection{Single transistor amplifying stages}
 
@@ -403,7 +417,7 @@ The input resistance can be expressed as
 \begin{equation}
 R_i = \frac{v_i}{i_i} = \frac{R_D + r_o}{1 + \left( g_m + g_{mb} \right) r_o}
 \end{equation}
-which if \( r_o >> R_D\) and \(g_mr_o >> 1\) then becomes
+which if \( r_o \gg R_D\) and \(g_mr_o \gg 1\) then becomes
 \begin{equation}
 R_i \approx \frac{1}{g_m + g_{mb}} \approx \frac{1}{g_m}
 \end{equation}
@@ -604,7 +618,7 @@ To include the output resistance of the transistor in the above analysis, $R$ sh
   \begin{subfigure}{0.5\textwidth}
     \centering
     \includegraphics[width=\linewidth]{pictures/Small-signal eq pure common mode input.png}
-    \caption{Small-signal equivalent pure common mode input}
+    \caption{Small-signal equivalent, pure common mode input}
     \label{fig:Small-signal eq pure common mode input}
   \end{subfigure}
   \hfill
@@ -628,7 +642,142 @@ CMRR = \left| \frac{A_{dm}}{A_{cm}} \right| = \frac{g_m R}{\dfrac{g_m R}{1 + 2 \
 \end{equation}
 \textit{OBS!} CMRR may be quite high at low frequencies.
 
-\section{Methods}
+\section{Current Mirrors and Active Loads}
+
+\subsection{Simple MOS current mirror}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{pictures/simple mos current mirrro.png}
+    \caption{Simple MOS current mirror}
+    \label{fig:simple mos current mirror}
+\end{figure}
+
+Simple nodal analysis gives
+\begin{equation}
+    V_{GS1} = V_{GS2} \Rightarrow  \sqrt{\frac{I_{D1}}{\frac{k'}{2}\left( \frac{W}{L} \right)_1}} = \sqrt{\frac{I_{D2}}{\frac{k'}{2}\left( \frac{W}{L} \right)_2}}
+\end{equation}
+which in turn gives
+\begin{equation}
+    \frac{I_{D1}}{\left( \frac{W}{L} \right)_1} = \frac{I_{D2}}{\left( \frac{W}{L} \right)_2}
+\end{equation}
+Because \( I_{OUT} = I_{D2} \) and \( I_{IN} = I_{D1} \) it can be rewritten as
+\begin{equation}
+    I_{OUT} = \frac{\left( \frac{W}{L} \right)_2}{\left( \frac{W}{L} \right)_1} I_{IN}
+\end{equation}
+and if the dimensions of $M_1$ and $M_2$ are the same then
+\begin{equation}
+     I_{OUT} = I_{IN}
+\end{equation}
+The minimum output voltage is
+\begin{equation}
+    V_{DS(\min),M_x} = V_{OUT(\min)} = V_{o:2} = V_{o:1}
+\end{equation}
+For MOSFETs with channel length modulation (\(\frac{1}{1+x} \approx 1-x, \quad x \ll 1 \))
+\begin{equation}
+I_{D2} = I_{D1}
+\frac{\left(\frac{W}{L}\right)_2 \left[1 + \lambda \left(V_{DS2} - V_{oc1}\right)\right]}     {\left(\frac{W}{L}\right)_1 \left[1 + \lambda \left(V_{DS1} - V_{oc1}\right)\right]} \approx I_{D1} \frac{\left(\frac{W}{L}\right)_2}{\left(\frac{W}{L}\right)_1} \left(1 + \lambda (V_{DS2} - V_{DS1}) \right)
+\end{equation}
+
+\subsection{Cascode current mirror}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{pictures/Cascode current mirror.png}
+    \caption{Simple cascode current mirror using MOS transistors}
+    \label{fig:Cascode current mirror}
+\end{figure}
+A cascode current mirror is useful for its high output resistance and the simple one has
+\begin{equation}
+R_o = r_{o1} + r_{o2} + r_{o1} r_{o2} \left( g_{m2} + g_{mb2} \right)
+\end{equation}
+and the minimum output voltage
+\begin{equation}
+    V_{OUT(\min)} = V_t + 2V_{ov}
+\end{equation}
+which is much much higher than the simple one.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{pictures/Improved cascode current mirror.png}
+    \caption{Cascode current mirror with improved biasing for maximum voltage swing}
+    \label{fig:Improved cascode current mirror}
+\end{figure}
+The improved cascode current mirror has a minimum output voltage of
+\begin{equation}
+    V_{OUT(\min)} \simeq 2V_{ov}
+\end{equation}
+
+\subsection{Active load CS amplifier}
+To increase the gain of a simple CS amplifier, $R_D$ has to be increased, which needs higher $V_{DD}$ (assuming constant current). The problem is that $R_D$ is the same for large signals (bias point) and small signals (gain). Instead a transistor can be used as "active load" which means high voltage gain without high $V_{DD}$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{pictures/Common-source amplifier with active load.png}
+    \caption{Common-source amplifier with active load ($T_2$ active load)}
+    \label{fig:Common-source amplifier with active load}
+\end{figure}
+DC voltage drop $V_{SD2}$ decoupled from small-signal resistance $r_{o2}$
+
+For Fig. \ref{fig:Common-source amplifier with active load} the output resistance becomes
+\begin{equation}
+    R_o = r_{o1} \parallel r_{o2}
+\end{equation}
+
+\subsection{Actively loaded differential pair}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{pictures/Differential to single ended conversion using actively loaded differential pairs.png}
+    \caption{Differential to single ended conversion using actively loaded differential pairs}
+    \label{fig:Differential to single ended conversion using actively loaded differential pairs}
+\end{figure}
+With perfect matching, the common-mode rejection ratio becomes
+\begin{equation}
+\mathrm{CMRR} = \left| \frac{A_{dm}}{A_{cm}} \right|
+= \left| \frac{G_{m(dm)}}{G_{m(cm)}} \right|
+\approx 2 g_{m(dp)}\, r_{o5}\, g_{m(mir)} 
+\left( r_{o(dp)} \,\|\, r_{o(mir)} \right)
+\end{equation}
+and with mismatch
+\begin{align}
+G_{m(dm)} &\approx g_{m(dp)} = G_{m(dm,\text{ideal})} \\
+G_{m(cm)} &\approx -\frac{1}{2 r_{o5}} \left( \varepsilon_{dp} + \varepsilon_{mir} \right)
+\end{align}
+where
+\begin{align}
+    \epsilon_{dp} &\approx \frac{1}{g_{m(mir)}r_{o(dp)}} - \frac{\Delta g_{m(dp)}}{g_{m(dp)}}\left( 1+ \frac{2r_{o5}}{r_{o(dp)}} \right) - \frac{2r_{o5}}{r_{o(dp)}} \frac{\Delta r_{o(dp)}}{r_{o(dp)}} \\
+    \epsilon_{mir} &\approx \frac{1}{g_{m(mir)}r_{o(mir)}} - \frac{\Delta g_{m(mir)}}{g_{m(mir)}}
+\end{align}
+
+\section{Frequency Response of Basic Stages}
+
+\subsection{Small-signal model with parasitics (MOSFET)}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{pictures/Small-signal MOS transistor equivalent circuit.png}
+    \caption{Small-signal MOS transistor equivalent circuit}
+    \label{fig:Small-signal MOS transistor equivalent circuit}
+\end{figure}
+
+Beyond its intrinsic elements, the small-signal model of a MOS transistor must account for several parasitic capacitances. These arise from the physical device structure and are critical for high-frequency analysis. The source-body and drain-body junctions form voltage-dependent depletion capacitances, $C_{sb}$ and $C_{db}$. Furthermore, the gate overlap of the source and drain regions creates parasitic overlap capacitances that add to the intrinsic $C_{gs}$ and $C_{gd}$. A gate-to-body capacitance, $C_{gb}$, exists due to the parasitic oxide capacitance between the gate material and the substrate outside the active channel area. These capacitances can be seen in Fig. \ref{fig:Small-signal MOS transistor equivalent circuit}. Finally parasitic resistances also exist in series with the source and drain terminals due to contact and diffusion resistivity, but they are often neglected in hand calculations for simplicity.
+
+\subsection{Frequency of CS stage ?????????????}
+\begin{figure}[H]
+  \centering
+  % First Subfigure
+  \begin{subfigure}{0.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pictures/Basic cs stage.png}
+    \caption{Basic cs stage}
+    \label{fig:Basic cs stage}
+  \end{subfigure}
+  \hfill
+  % Second Subfigure
+  \begin{subfigure}{0.49\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pictures/Common mode half circuit.png}
+    \caption{Common mode half circuit}
+    \label{fig:Common mode half circuit}
+  \end{subfigure}
+  \caption{Pure common mode differentiral pair. Because of symmetry, no current across \(i_x\) $\rightarrow$ enough to analyze only one half of the differential circuit}
+  \label{fig:Common-source source degenerated (MOSFET)}
+\end{figure}
 
 \subsection{Dominant-Pole Approximation}
 
