@@ -25,6 +25,8 @@
 \usepackage{subcaption}
 \captionsetup{labelfont=bf}
 
+\counterwithin{equation}{section}
+
 
 
 \lstdefinestyle{matlabStyle}{
@@ -119,8 +121,8 @@ The primary purposes of creating this document were:
 \textbf{Important notes:}
 \begin{itemize}
     \item This is \emph{not} an official document from the course administration, department, or faculty
-    \item Derivations and proofs are often left out, for further reading see the coursebook (\textbf{Gray, Hurst, Lewis, Meyer:} \textit{Analysis and Design of Analog Integrated Circuits}, Fifth Edition. Wiley 2010).
-    \item Although care has been taken to ensure accuracy and formulas are primarily sourced from official materials, the coursebook and/or lecture slides, cross-referencing is recommended, as there may be errors or omissions
+    \item Derivations and proofs are often left out, for further reading see the coursebook (\textbf{Gray, Hurst, Lewis, Meyer:} \textit{Analysis and Design of Analog Integrated Circuits}, Fifth Edition. Wiley 2010)
+    \item Although care has been taken to ensure accuracy and the contents are primarily sourced from official materials, the coursebook and/or lecture slides, there may still be errors or omissions
     \item This document is a work in progress and may be updated
 \end{itemize}
 
@@ -757,27 +759,140 @@ where
 
 Beyond its intrinsic elements, the small-signal model of a MOS transistor must account for several parasitic capacitances. These arise from the physical device structure and are critical for high-frequency analysis. The source-body and drain-body junctions form voltage-dependent depletion capacitances, $C_{sb}$ and $C_{db}$. Furthermore, the gate overlap of the source and drain regions creates parasitic overlap capacitances that add to the intrinsic $C_{gs}$ and $C_{gd}$. A gate-to-body capacitance, $C_{gb}$, exists due to the parasitic oxide capacitance between the gate material and the substrate outside the active channel area. These capacitances can be seen in Fig. \ref{fig:Small-signal MOS transistor equivalent circuit}. Finally parasitic resistances also exist in series with the source and drain terminals due to contact and diffusion resistivity, but they are often neglected in hand calculations for simplicity.
 
-\subsection{Frequency of CS stage ?????????????}
+\subsection{Frequency of CS stage}
 \begin{figure}[H]
   \centering
   % First Subfigure
-  \begin{subfigure}{0.5\textwidth}
+  \begin{subfigure}{0.35\textwidth}
     \centering
     \includegraphics[width=\linewidth]{pictures/Basic cs stage.png}
-    \caption{Basic cs stage}
+    \caption{Basic CS stage}
     \label{fig:Basic cs stage}
   \end{subfigure}
   \hfill
   % Second Subfigure
-  \begin{subfigure}{0.49\textwidth}
+  \begin{subfigure}{0.64\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{pictures/Common mode half circuit.png}
-    \caption{Common mode half circuit}
-    \label{fig:Common mode half circuit}
+    \resizebox{\linewidth}{!}{
+      \input{circuits/freq cs stage}
+    }
+    \caption{Small-signal model with relevant parasitics for CS stage}
+    \label{fig:freq cs stage small signal}
   \end{subfigure}
-  \caption{Pure common mode differentiral pair. Because of symmetry, no current across \(i_x\) $\rightarrow$ enough to analyze only one half of the differential circuit}
-  \label{fig:Common-source source degenerated (MOSFET)}
+  \caption{Basic CS stage and small-signal model}
+  \label{fig:freq cs stage}
 \end{figure}
+The circuit above has the transfer function
+\begin{equation}
+\frac{v_o}{v_i} = -g_m R_L \frac{1 - s \frac{C_{gd}}{g_m}}{1 + s \left[ R_s C_{gs} + C_{gd} (R_s + R_L + g_m R_s R_L) \right] + s^2 C_{gd} C_{gs} R_L R_s}
+\end{equation}
+and the denominator $D(s)$ becomes assuming well separated poles:
+\begin{equation}
+D(s) = \left( 1 - \frac{s}{p_1} \right) \left( 1 - \frac{s}{p_2} \right) = 1 - s \left( \frac{1}{p_1} + \frac{1}{p_2} \right) + \frac{s^2}{p_1 p_2} \approx 1 - \frac{s}{p_1} + \frac{s^2}{p_1 p_2}
+\end{equation}
+Which in turn gives us
+\begin{equation}
+1 + s \left[ R_s C_{gs} + C_{gd} (R_s + R_L + g_m R_s R_L) \right] + s^2 C_{gd} C_{gs} R_L R_s \approx 1 - \frac{s}{p_1} + \frac{s^2}{p_1 p_2}
+\end{equation}
+with the dominant pole
+\begin{equation}
+ p_1 = -\frac{1}{R_s C_{gs} + C_{gd} (R_s + R_L + g_m R_s R_L)}
+\end{equation}
+and the non-dominant pole
+\begin{equation}
+\begin{aligned}
+p_2 &= \frac{p_1 p_2}{p_1} = -\frac{R_s C_{gs} + C_{gd} (R_s + R_L + g_m R_s R_L)}{C_{gd} C_{gs} R_L R_s} \\
+&= -\left( \frac{1}{R_L C_{gd}} + \frac{1}{R_L C_{gs}} + \frac{1}{R_s C_{gs}} + \frac{g_m}{C_{gs}} \right) \approx -\frac{g_m}{C_{gs}}
+\end{aligned}
+\end{equation}
+
+\subsection{Common gate - wideband current buffer}
+
+\begin{figure}[H]
+  \centering
+  % First Subfigure
+  \begin{subfigure}{0.4\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pictures/wideband current buffer trans.png}
+    \caption{Schematic of a CG amplifier (wideband current buffer)}
+    \label{fig:wideband current buffer trans}
+  \end{subfigure}
+  \hfill
+  % Second Subfigure
+  \begin{subfigure}{0.59\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pictures/wideband current buffer small signal.png}
+    \caption{Small-signal model for the CG amplifier}
+    \label{fig:wideband current buffer small signal}
+  \end{subfigure}
+  \caption{CG stage (wideband current buffer)}
+  \label{fig:wideband current buffer}
+\end{figure}
+
+When neglecting $r_o, R_s$ and $C_{gd}$:
+
+\begin{equation}
+\frac{i_o}{i_i} \approx \frac{(g_m + g_{mb})v_i}{(g_m + g_{mb})v_i + s(C_{gs} + C_{sb})v_i} = \frac{1}{1 + s \frac{C_{gs} + C_{sb}}{g_m + g_{mb}}}
+\end{equation}
+ This then gives
+\begin{equation}
+p_1 = -\frac{g_m + g_{mb}}{C_{gs} + C_{sb}} \approx \omega_T \quad 
+\end{equation}
+which is a wideband current buffer.
+
+\subsection{Source follower}
+\begin{figure}[H]
+  \centering
+  % First Subfigure
+  \begin{subfigure}{0.4\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pictures/source follower trans.png}
+    \caption{A schematic of a CG amplifier (wideband current buffer)}
+    \label{fig:source follower trans}
+  \end{subfigure}
+  \hfill
+  % Second Subfigure
+  \begin{subfigure}{0.59\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pictures/source follower small signal.png}
+    \caption{Small-signal model for the CG amplifier}
+    \label{fig:source follower small signal}
+  \end{subfigure}
+  \caption{CG stage (wideband current buffer)}
+  \label{fig:source follower}
+\end{figure}
+The output impedance of the circuit becomes
+\begin{equation}
+Z_o = \frac{R_L'}{1 + g_m R_L'} \frac{1 + R_s C_{gs} s}{1 + \frac{R_L' + R_s}{1 + g_m R_L'} C_{gs} s}
+\end{equation}
+with $R_L' = R_L \parallel \frac{1}{g_{mb}} = \frac{R_L}{1 + g_{mb} R_L}$. For low frequencies, this becomes
+
+\begin{equation}
+Z_{\omega \rightarrow 0} \equiv Z_o \big|_{\omega \rightarrow 0} = \frac{R_L'}{1 + g_m R_L'} = \frac{1}{g_m} \parallel R_L' \approx \frac{1}{g_m} \parallel \frac{1}{g_{mb}} = \frac{1}{g_m + g_{mb}} \equiv R_1
+\end{equation}
+and for high frequencies
+\begin{equation}
+Z_{\omega \rightarrow \infty} \equiv Z_o \big|_{\omega \rightarrow \infty} = R_s \parallel R_L' \approx \frac{1}{g_{mb}} \equiv R_2
+\end{equation}
+
+Assuming that the collector bias current is such that $Z_o$ is inductive, we can postulate an equivalent circuit for $Z_o$ as shown in Fig. \ref{fig:L source follower}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\linewidth]{pictures/L source follower.png}
+    \caption{Equivalent circuit for the output impedance of an emitter follower at moderate current levels}
+    \label{fig:L source follower}
+\end{figure}
+
+\noindent If (as it is) $Z_{\omega \rightarrow 0} \ll Z_{\omega \rightarrow \infty}$:
+
+\begin{equation}
+Z_o = \frac{R_1 R_2}{R_1 + R_2} \frac{1 + s L / R_1}{1 + s L / (R_1 + R_2)} \approx Z_{\omega \rightarrow 0} \frac{1 + s L / Z_{\omega \rightarrow 0}}{1 + s L / Z_{\omega \rightarrow \infty}}
+\end{equation}
+where
+\begin{equation}
+L = \frac{R_s R_L'}{1 + g_m R_L'} C_{gs}
+\end{equation}
 
 \subsection{Dominant-Pole Approximation}
 
@@ -825,7 +940,7 @@ Calculate the \(-3\text{dB}\) angular frequency of the following circuit (ignore
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{pictures/Small-signal equivalent circuit of two-stage common-source cascade amplifier.png}
-    \caption{Small-signal equivalent circuit of fig. \ref{fig:Two-stage common-source cascade amplifier}}
+    \caption{Small-signal equivalent circuit of Fig. \ref{fig:Two-stage common-source cascade amplifier}}
     \label{fig:Small-signal equivalent circuit of two-stage common-source cascade amplifier}
 \end{figure}
 
@@ -846,6 +961,38 @@ and thus
 \begin{equation}
     \omega_{-3\text{dB}} \approx \frac{1}{b_1} = \frac{1}{\sum_{\forall i} \tau_i}
 \end{equation}
+
+\section{Operational amplifiers and frequency compensation}
+
+\subsection{Operational amplifiers}
+
+
+\subsection{Classic two-stage opamp}
+
+\subsubsection{Systematic offset}
+
+\subsubsection{Slew-rate}
+
+
+\subsection{Negative feedback}
+
+
+\subsection{Frequency response of two-stage opamp}
+
+\subsubsection{Pole splitting - Miller effect}
+
+\subsubsection{Zero implementation}
+
+
+\subsection{Cascode opamp}
+
+
+
+\section{Noise}
+
+\section{Differential operational amplifiers ????}
+
+\section{Current sources and voltage references}
 
 
 

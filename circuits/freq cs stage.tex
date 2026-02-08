@@ -1,0 +1,13 @@
+\begin{circuitikz}[american voltages]
+    \draw (0,0) to [american current source, l_=$i_i$] (0,3) to (2,3) to [R, l^=$R_S$] (2,0) to (0,0);
+
+    \draw (2,3) to (4,3) to [C, l_=$C_{gs}$, v^=$v_1$] (4,0) to (2,0);
+
+    \draw (4,3) to [C, l^=$C_{gd}$] (7,3) to [american controlled current source, l_=$g_m v_1$] (7,0) to (4,0);
+
+    \draw (7,3) to (9,3) to [R, l_=$R_{L}$, v^=$v_o$] (9,0) to (7,0);
+
+    \draw (5.5,0) node[ground]{};
+    
+
+\end{circuitikz}
