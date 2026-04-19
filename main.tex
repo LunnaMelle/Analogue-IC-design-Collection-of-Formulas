@@ -323,12 +323,8 @@ I hope this document proves useful. \\ Best of luck,
 & \quad A = \frac{B}{C} &&\\[4pt]
 \end{flalign}
 
-\begin{figure}[H]
-    \centering
-    \input{circuits/CS-stage} % Inserts the LaTeX file
-    \caption{Common-source amplifier stage}
-    \label{fig:CS-stage}
-\end{figure}
+
+
 
 \section{Amplifying Stages}
 
@@ -962,30 +958,367 @@ and thus
     \omega_{-3\text{dB}} \approx \frac{1}{b_1} = \frac{1}{\sum_{\forall i} \tau_i}
 \end{equation}
 
+
+
 \section{Operational amplifiers and frequency compensation}
 
 \subsection{Operational amplifiers}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{pictures/Ideal operational amplifier.png}
+    \caption{Ideal operational amplifier}
+    \label{fig:Ideal operational amplifier}
+\end{figure}
+An ideal operational amplifier has infinite open-loop gain ($a\rightarrow \infty$), zero voltage over the input when feedback is applied ($v_i=0$), zero current flowing through the input ($i_i=0$) and zero output resistance ($R_o=0$).
 
+\subsubsection{Different amplifying configurations}
+\begin{figure}[H]
+  \centering
+  % First Subfigure
+  \begin{subfigure}{0.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pictures/voltage buffer.png}
+    \caption{Voltage follower configuration}
+    \label{fig:voltage buffer}
+  \end{subfigure}
+  \hfill
+  % Second Subfigure
+  \begin{subfigure}{0.49\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pictures/noninverting.png}
+    \caption{Noninverting amplifier configuration}
+    \label{fig:noninverting}
+  \end{subfigure}
+  \label{fig:amps1}
+\end{figure}
+The voltage buffer has
+\begin{equation}
+V_o = V_s
+\end{equation}
+and the non-inverting
+\begin{equation}
+V_o = \left( 1 + \frac{R_2}{R_1} \right) V_s
+\end{equation}
+
+\begin{figure}[H]
+  \centering
+  % First Subfigure
+  \begin{subfigure}{0.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pictures/integrating amp.png}
+    \caption{Integrator configuration}
+    \label{fig:integrating amp}
+  \end{subfigure}
+  \hfill
+  % Second Subfigure
+  \begin{subfigure}{0.49\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{pictures/differatial amp.png}
+    \caption{Differential amplifier configuration}
+    \label{fig:differatial amp}
+  \end{subfigure}
+  \label{fig:amps2}
+\end{figure}
+The integrator has
+\begin{equation}
+V_o = -\frac{I_2}{sC} = -\frac{V_s}{sRC}
+\end{equation}
+and the differential
+\begin{equation}
+V_o = V_1 \frac{R_2}{R_1 + R_2} \left( 1 + \frac{R_2}{R_1} \right) - V_2 \frac{R_2}{R_1} = \frac{R_2}{R_1}(V_1 - V_2)
+\end{equation}
+
+\subsubsection{Output impedances of different stages ????}
 
 \subsection{Classic two-stage opamp}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{pictures/Basic two-stage operational amplifier.png}
+    \caption{Basic two-stage CMOS operational amplifier}
+    \label{fig:Basic two-stage operational amplifier}
+\end{figure}
+
+This basic two-stage op-amp has a differential input and a single-ended output. It consists of a differential pair, a CS-stage and active loads with a Miller capacitance ($C_c$) added for frequency stability.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{pictures/More detailed typical two-stage operational amplifier.png}
+    \caption{More detailed schematic diagram of a typical two-stage CMOS operational amplifier}
+    \label{fig:typ op amp}
+\end{figure}
+The op-amp in Fig. \ref{fig:typ op amp} has the stage transfer functions
+\begin{align}
+A_{v1} &= \frac{v_{o1}}{v_{i}} = G_{m1} R_{o1} = g_{m1} (r_{o2} \parallel r_{o4}) \\
+A_{v2} &= \frac{v_{o}}{v_{o1}} = G_{m2} R_{o} = -g_{m6} (r_{o6} \parallel r_{o7})
+\end{align}
+which gives us the total transfer function
+\begin{equation}
+A_{v} = A_{v1} A_{v2} = -g_{m1} (r_{o2} \parallel r_{o4}) g_{m6} (r_{o6} \parallel r_{o7})
+\end{equation}
+It also has an output swing of
+\begin{equation}
+-V_{SS} + V_{ov6} \le V_{O} + v_{o} \le V_{DD} - |V_{ov7}|
+\end{equation}
 
 \subsubsection{Systematic offset}
+In Fig. \ref{fig:typ op amp} we want 
+\begin{equation}
+    V_o \approx \frac{V_{DD} + (-V_{SS})}{2}
+\end{equation}
+when $v_i=0$. This means we need a perfectly balanced design, which it is when
+\begin{equation}
+    I_{D2} = I_{D1} \quad \text{and} \quad I_{D6} = I_{D7}
+\end{equation}
+Otherwise, we need a systematic $V_{off}$ between the two inputs to achieve a perfect balance.
+
+Obviously $V_{DS3} = V_{GS3} = V_{GS4}$.
+
+If $V_{DS4} = V_{DS3} \Rightarrow$ perfectly balanced input stage, i.e. 
+\begin{equation}
+    I_{D4} = I_{D3} \quad \text{and} \quad I_{D2} = I_{D1}
+\end{equation}
+
+Then $V_{GS3} = V_{GS4} = V_{GS6}$ and because $V_{t3} = V_{t4} = V_{t6}$ then in turn $V_{ov6} = V_{ov4} = V_{ov3}$ which gives us
+\begin{equation}
+    \sqrt{\frac{2I_{D3}}{k'(W/L)_3}} = \sqrt{\frac{2I_{D4}}{k'(W/L)_4}} = \sqrt{\frac{2I_{D6}}{k'(W/L)_6}}
+\end{equation}
+and thus
+\begin{equation}
+    \frac{I_{D3}}{(W/L)_3} = \frac{I_{D4}}{(W/L)_4} = \frac{I_{D6}}{(W/L)_6}
+\end{equation}
+if we disregard channel-length modulation of $M_3/M_4$ vs $M_6$.
+
+Also disregarding the different channel-length modulation of $M_7$ vs $M_5$ we get
+\begin{equation}
+V_{SG6} = V_{SG7} \Rightarrow \frac{I_{D6}}{(W/L)_6} = \frac{I_{D7}}{(W/L)_7} \Rightarrow \frac{I_{D6}}{I_{D7}} = \frac{(W/L)_6}{(W/L)_7}
+\end{equation}
+
+Thus we get
+\begin{equation}
+    \frac{I_{D4}}{(W/L)_{3,4}} = \frac{I_{D6}}{(W/L)_6} = \frac{I_{D7}}{(W/L)_7} 
+\end{equation}
+and using $I_{D4} = \frac{I_{D5}}{2}$
+\begin{equation}
+    \frac{I_{D5}/2}{(W/L)_{3,4}} = \frac{I_{D7}}{(W/L)_7}
+\end{equation}
+
+Finally we then get
+\begin{equation}
+\boxed{\frac{(W/L)_{3,4}}{(W/L)_6} = \frac{1}{2} \frac{(W/L)_5}{(W/L)_7}}
+\end{equation}
+These aspect ratios guarantee a (close-to) zero systematic offset voltage.
 
 \subsubsection{Slew-rate}
+Slew rate is the maximum possible rate of change of an amplifier's output voltage, typically measured in volts per microsecond ($\mathrm{V/\mu s}$). It occurs when a large input signal causes the amplifier's internal stages to "slew," limited by the constant current available to charge internal and external capacitances.
+
+The circuit in Fig. \ref{fig:typ op amp} is reduced to a constant-current charging model to calculate the slew rate, where $C_{L,tot}$ represents the total effective capacitance of the load and feedback network as seen from the output node.
+\begin{figure}[H]
+    \centering
+        \resizebox{0.3\linewidth}{!}{
+      \input{circuits/slew rate op amp rising}
+    }
+    \caption{Figure for the calculation of the rising slew-rate for the circuit in Fig. \ref{fig:typ op amp}.}
+    \label{fig:slew rate op amp rising}
+\end{figure}
+
+$V_{GS6}$ falls quickly and $I_6$ goes to zero as $2I_1$ in $M_4$ discharges $C_{GS6}$ below the threshold of $M_6$. While $M_4$ stays in the active region, we have:
+\begin{equation}
+    SR_r = \frac{dV_o}{dt} \approx \frac{I_7 - 2I_1}{C_{L,tot}}
+\end{equation}
+This phase is relatively short, as $M_4$ quickly transitions to the linear region. When $M_4$ goes linear, drawing much less than $2I_1$, we can assume $V_{DS4} \approx 0$ with good approximation. In this case the rising slew-rate is
+\begin{equation}
+SR_r \approx \frac{I_7}{C_{L,tot} + C_c}
+\end{equation}
+
+\begin{figure}[H]
+    \centering
+        \resizebox{0.4\linewidth}{!}{
+      \input{circuits/slew rate op amp falling}
+    }
+    \caption{Figure for the calculation of the falling slew-rate for the circuit in Fig. \ref{fig:typ op amp}.}
+    \label{fig:slew rate op amp falling}
+\end{figure}
+
+$V_{GS6}$ rises quickly as $2I_1$ charges $C_{GS6}$ and $C_C$, until $V_{GS6}$ reaches a value $V^*$ above $V_t$ at which $V_{GS6}$ remains constant, and $I_6$ with it. The constant value of  $I_6$ is found from 
+\begin{equation}
+\begin{cases}
+-C_c \dfrac{dV_o}{dt} = 2I_1 \\
+-C_{L,tot} \dfrac{dV_o}{dt} = I_6 - I_7 - 2I_1
+\end{cases}
+\end{equation}
+
+\begin{equation}
+\Rightarrow I_6 = I_7 + 2I_1 \left( 1 + C_{L,tot}/C_c \right)
+\end{equation}
+In this regime, we have 
+\begin{equation}
+    SR_f = \left| \dfrac{dV_o}{dt} \right| \approx \dfrac{2I_1}{C_c}    
+\end{equation}
+Thus in all, we obtain
+\begin{equation}
+\boxed{SR_r \approx \frac{I_7}{C_{L,tot} + C_c}} \quad \text{and} \quad \boxed{SR_f \approx \frac{2I_1}{C_c}}
+\end{equation}
 
 
 \subsection{Negative feedback}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{pictures/Ideal feedback configuration.png}
+    \caption{Ideal feedback configuration}
+    \label{fig:Ideal feedback configuration}
+\end{figure}
+
+In an idealized feedback configuration, the input $S_i$ and output $S_o$ signals can be voltages or currents. The basic amplifier (a) processes an error signal $S_{\epsilon}$, which is the difference between the input and the signal $S_{fb}$ returned by the feedback network (f).
+
+The relationship between these signals is defined as: 
+\begin{equation}
+\begin{cases}
+S_{fb} = a(s) \cdot f \cdot S_{\epsilon} \\
+S_{\epsilon} = S_i - S_{fb} \\
+S_o = a(s) \cdot S_{\epsilon}
+\end{cases}
+\end{equation}
+Combining these yields the closed-loop gain (A), the fundamental equation for negative feedback: 
+\begin{equation} 
+A = \frac{S_o}{S_i} = \frac{a}{1 + af} 
+\end{equation}
+The product af is defined as the loop gain (T): \begin{equation} T = af \implies A = \frac{1}{f} \frac{T}{1 + T} \end{equation}
+When $T\gg1$, the closed-loop gain is determined primarily by the feedback network: 
+\begin{equation} 
+A \approx \frac{1}{f} 
+\end{equation}
+High loop gain minimizes the error signal $S_{\epsilon}$ and forces the feedback signal $S_{fb}$ to be a replica of the input: 
+\begin{equation} 
+\frac{S_\epsilon}{S_i} = \frac{1}{1 + T} \quad \text{and} \quad \frac{S_{fb}}{S_i} = \frac{T}{1 + T} 
+\end{equation}
+If $T\gg1$, $S_{fb} \approx S_i$, and the output $S_o$ becomes an accurately amplified replica of the input signal.
 
 
 \subsection{Frequency response of two-stage opamp}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{pictures/two-stage CMOS op amp Rz Cc.png}
+    \caption{A two-stage CMOS op amp with the compensation capacitor $C$ and $R_Z$ connected to the cascode node.}
+    \label{fig:two-stage CMOS op amp Rz Cc}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{pictures/Small-signal equivalent circuit of a compensation stage with nulling resistor.png}
+    \caption{Small-signal equivalent circuit of a compensation stage with a nulling resistor. ($R_1 = r_{o2}||r_{o4}$, $R_2 = r_{o6}|||r_{o7}$, $C_1 = C_{gs6}$, $C_2 = C_{L}$)}
+    \label{fig:Small-signal equivalent circuit of a compensation stage with nulling resistor}
+\end{figure}
+
+If we were to disregard $R_Z$ and $C$ we would get the poles
+\begin{equation}
+    |p_1| = \frac{1}{R_1 C_1}, \quad |p_2| = \frac{1}{R_2 C_2}
+\end{equation}
+which would have a phase margin $\varphi \approx 0^{\degree}$. This would very likely be unstable or highly peaking, which is why we introduce $C$ (Miller capacitance).
+
 \subsubsection{Pole splitting - Miller effect}
+By adding $C$ but not $R_Z$ KCL gives
+\begin{equation}
+\begin{cases}
+-i_s = \dfrac{v_1}{R_1} + v_1 C_1 s + (v_1 - v_o) Cs \\ \\
+0 = \dfrac{v_o}{R_2} + v_o C_2 s + (v_o - v_1) Cs + g_m v_1
+\end{cases}
+\end{equation}
+for which
+\begin{equation}
+\frac{v_o}{i_s} = -\frac{(g_m - Cs) R_1 R_2}{1 + s \left[ (C_2 + C) R_2 + (C_1 + C) R_1 + g_m R_1 R_2 C \right] + s^2 (C_1 C + C_2 C + C_1 C_2) R_1 R_2}
+\end{equation}
+This would give us a zero and two poles with them being
+\begin{equation}z \approx +\frac{g_m}{C}, \quad p_1 \approx -\frac{1}{g_m R_1 R_2 C}, \quad  p_2 \approx  -\frac{g_m}{C_1 + C_2 + C_1 C_2 / C} \end{equation}
+
+The unity-gain angular frequency of the circuit (if $f=1$) would be 
+\begin{equation}
+\omega_0 \approx A_0 \cdot |p_1| = g_{m1} R_1 g_{m6} R_2 \cdot \frac{1}{g_{m6} R_1 R_2 C} = \frac{g_{m1}}{C}
+\end{equation}
+and thus have a phase margin of
+\begin{align}
+\varphi_{M} &= 180^\circ - \arctan\left( \frac{\omega_0}{|p_1|} \right) - \arctan\left( \frac{\omega_0}{|p_2|} \right) - \arctan\left( \frac{\omega_0}{|z|} \right) \\
+ &\approx 90^\circ - \arctan\left( \frac{\omega_0}{|p_2|} \right) - \arctan\left( \frac{\omega_0}{|z|} \right)
+\end{align}
 
 \subsubsection{Zero implementation}
+With the zero in the right half-plane, the phase margin is not great. But by adding a resistor $R_Z$ in series with the compensation capacitor $C$ we can move the zero to the left half-plane. See figure below:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{pictures/Pole-zero diagram showing movement of the transmission zero.png}
+    \caption{Pole-zero diagram showing movement of the transmission zero for various values of $R_Z$}
+    \label{fig:Pole-zero diagram showing movement of the transmission zero }
+\end{figure}
+We would then get the zero:
+\begin{equation}
+z = -\frac{1}{\left( R_Z - \frac{1}{g_m} \right) C} \quad \Rightarrow z \to \infty \text{ if } R_Z = 1/g_m
+\end{equation}
+which can be tuned to get the right phase margin by changing $R_Z$. $R_Z$ can in turn be implemented by a transistor. The drain-to-source resistance of the transistor is determined by $V_{gs}$ which can be determined by tracing the voltage path. 
+
+Adding $R_Z$ would however also add another pole
+\begin{equation}
+ p_3 \approx -\frac{1}{R_Z \frac{C_1 C_2}{C_1 + C_2}}
+\end{equation}
+but the phase margin would still increase with the formula for it being
+\begin{equation}
+    \varphi_M \approx 90^\circ - \arctan\left( \frac{\omega_0}{|p_2|} \right) - \arctan\left( \frac{\omega_0}{|p_3|} \right) + \arctan\left( \frac{\omega_0}{|z|} \right)
+\end{equation}
+
+\subsection{Phantom zero}
+It is possible to improve $\varphi_M$ with no downsides with phantom zero compensation. Phantom zero compensation does this by deliberately introduces a pole-zero doublet in the feedback network to improve phase margin, where the zero cancels a high-frequency pole while the pole shifts to a lower frequency. It is called "phantom" because the zero disappears from the feedback amplifier's transfer function through algebraic cancellation, yet it still provides improved phase margin.
+
+\begin{figure}[H]
+    \centering
+        \resizebox{0.5\linewidth}{!}{
+      \input{circuits/phantom opamp}
+    }
+    \caption{Noninverting amplifier with $R_{ph}$ added for phantom zero compensation.}
+    \label{fig:phantom opamp}
+\end{figure}
+The phantom zero ratio is derived from the time constants of the two paths created by $R_{ph}$, which is
+\begin{equation}
+\frac{z_{ph}}{p_{ph}} = \frac{R_{ph} \frac{C_1 C_2}{C_1 + C_2}}{R_{ph} C_1} = \frac{C_2}{C_1 + C_2} = f_0
+\end{equation}
+The lower the $f_0$ (i.e., the higher the gain of the feedback amplifier), the more effective the phantom zero. Ideally, we would like to not have a "phantom pole" at all, as it steals phase. $z_{ph}$ is always in the vicinity of $\omega_0$ (often slightly beyond).
+
+But why does the pole disappear?
+\begin{equation}
+H_{fb,ideal} (\equiv H_{fb,\infty}) = \frac{1}{f} = \frac{1}{f_0} \frac{1 - \frac{s}{p_{ph}}}{1 - \frac{s}{z_{ph}}}
+\end{equation}
+
+Thus, we would  expect to see a  pole $z_{ph}$ in the transfer function of the feedback amplifier; however:
+\begin{align}
+H_{fb,real} &= \frac{1}{f} \frac{f \cdot A(j\omega)}{1 + f \cdot A(j\omega)} = \frac{A(j\omega)}{1 + f \cdot A(j\omega)} \\
+&= \frac{\left( 1 - \frac{s}{p_{ph}} \right) A(j\omega)}{\left( 1 - \frac{s}{p_{ph}} \right) + f_0 \left( 1 - \frac{s}{z_{ph}} \right) A(j\omega)}
+\end{align}
+The pole $z_{ph}$ disappears, although it still influences overall pole positions. The "phantom pole" $p_{ph}$ however becomes a zero in the transfer function of the feedback amplifier.
 
 
-\subsection{Cascode opamp}
-
+\subsection{Folded-cascode opamp}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{pictures/folded-cascode op amp.png}
+    \caption{Detailed schematic of a folded-cascode amplifier}
+    \label{fig:folded-cascode op amp }
+\end{figure}
+Very popular operational amplifier as it can have lower $V_{DD}$ and higher $I_{DD}$. The output is by far the highest-impedance node, which means there is no need for $C_{C}$ to make the opamp stable, as $C_L$ is typically enough. The current gain is found very
+easily with Norton (same as in a standard diff-pair):
+\begin{equation}
+    G_m = g_{m1,2}
+\end{equation}
+The output resistance of the opamp can easily be calculated by splitting it up to
+\begin{equation}
+    R_o = R_{o,up}||R_{o,down}
+\end{equation}
+where
+\begin{align}
+    R_{o,up} &\approx g_{m4A}r_{o4A}r_{o4} \\
+    R_{o,down} &\approx g_{m2A}r_{o2A}(r_{o2}||r_{o12})
+\end{align}
+Thus the output resistance is
+\begin{equation}
+    R_o \approx (g_{m4A}r_{o4A}r_{o4})\parallel[g_{m2A}r_{o2A}(r_{o2}||r_{o12})]
+\end{equation}
 
 
 \section{Noise}

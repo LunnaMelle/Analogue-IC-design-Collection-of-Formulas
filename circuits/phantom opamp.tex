@@ -1,0 +1,18 @@
+\begin{circuitikz}[american voltages]
+    % Op-amp
+    \draw (0,0) node[op amp, noinv input up](opamp){};
+    
+
+    
+    % Input resistors and source
+    \draw (opamp.+) to [short, -o] ++(-2,0) to [open, v=$V_s$] ++(0,-1.5) to [short, o-] ++(0,-0.1) node[ground]{};
+    
+    % Feedback resistor
+    \draw (opamp.-) to ++(0,-1) to [C, l_=$C_{1}$] ++(0,-1.5) to [R, l_=$R_{ph}$] ++(0,-1.5) node[ground]{};
+    
+    \draw (opamp.-) to ++(0,-1) to [C, l_=$C_{2}$] ++(2.5,0) to ++(0,1.5);
+    
+    % Output load
+    \draw (opamp.out) to ++(1.5,0) to [C, l_=$C_{L}$, v^=$V_o$] ++(0,-2) node[ground]{};
+    
+\end{circuitikz}

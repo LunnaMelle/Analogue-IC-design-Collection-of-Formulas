@@ -1,0 +1,13 @@
+
+\begin{circuitikz}[american voltages]
+    \draw[dashed] (0,3) to [american current source, l^=$2I_1$] (0,1);
+    \draw (0,1) to (2,1);
+
+    \draw (0,3) to [C, l^=$C_{C}$] (2,3) to [C, l^=$C_{L,tot}$] (2,1);
+
+    \draw (2,5) to [american current source, l^=$I_7$] (2,3) to [short, -o, l=$V_o$] (2.5,3);
+
+    
+    
+
+\end{circuitikz}

@@ -1,0 +1,17 @@
+\begin{circuitikz}[american voltages]
+    \draw (0,3) to [C, l^=$C_{GS6}$]  (0,1) to (2,1);
+
+    \draw (0,3) to [C, l^=$C_{C}$] (2,3) to [american current source, l^=$I_6$] (2,1);
+
+    \draw (2,5) to [american current source, l^=$I_7$] (2,3) to (4,3) to [short, -o, l=$V_o$] (4.5,3);
+
+    \draw (4,3) to [C, l^=$C_{L,tot}$] (4,1);
+
+    \draw (0,5) to [american current source, l_=$2I_1$] (0,3);
+
+    \draw (0,2.75) to [short, -o] (-1,2.75);
+    \draw (0,1.25) to [short, -o] (-1,1.25);
+    \draw (-1,2.75) to [open, v=$V^*$] (-1,1.25);
+    
+
+\end{circuitikz}
